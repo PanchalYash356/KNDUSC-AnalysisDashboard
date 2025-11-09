@@ -1,27 +1,35 @@
 #!/usr/bin/env bash
 set -o errexit
 
-echo "=== Starting Django Dashboard Build ==="
+echo "=== Starting Build Process ==="
+
+# Print environment info
+echo "Python: $(python --version)"
+echo "Pip: $(pip --version)"
+echo "Current directory: $(pwd)"
+ls -la
 
 # Upgrade pip
-echo "1. Upgrading pip..."
 python -m pip install --upgrade pip
 
 # Install dependencies
-echo "2. Installing dependencies..."
+echo "Installing requirements..."
 pip install -r requirements.txt
 
+# Debug: Show installed packages
+echo "Installed packages:"
+pip list
+
 # Create necessary directories
-echo "3. Creating directories..."
 mkdir -p staticfiles
 mkdir -p media
 
 # Collect static files
-echo "4. Collecting static files..."
+echo "Collecting static files..."
 python manage.py collectstatic --no-input --clear
 
 # Apply database migrations
-echo "5. Applying database migrations..."
+echo "Running migrations..."
 python manage.py migrate
 
 echo "=== Build Completed Successfully ==="
